@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mario with Obstacles and Collision</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #game-container {
+        position: relative;
+        width: 800px;
+        height: 260px;
+        overflow: hidden;
+        background-color: #87ceeb;
+      }
+
+      #background {
+        position: absolute;
+        width: 800px; /* Make this larger than the container to allow scrolling */
+        height: 260px;
+        background-image: url('https://www.shutterstock.com/image-illustration/venezuela-tachira-february-05-2023-260nw-2299245343.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      #mario {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        border-radius: 10px;
+        bottom: 20px;
+        left: 200px;
+      }
+
+      #mario img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .obstacle {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: green;
+        bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container">
+      <div id="background"></div>
+      <div id="mario">
+        <img
+          src="https://pngimg.com/uploads/mario/mario_PNG74.png"
+          alt="Mario"
+        />
+      </div>
+
+      <!-- Obstacles -->
+      <div class="obstacle" style="left: 400px;"></div>
+      <div class="obstacle" style="left: 600px;"></div>
+      <div class="obstacle" style="left: 800px;"></div>
+    </div>
+
+    <script>
+      const mario = document.getElementById("mario");
+      const background = document.getElementById("background");
+      const container = document.getElementById("game-container");
+
+      let marioX = 200; // Mario's horizontal position
+      let marioY = 20; // Mario's vertical position (ground level)
+      let velocityY = 0; // Vertical velocity for jump
+      let isJumping = false; // Is Mario currently jumping?
+      const gravity = 0.5; // Gravity strength
+      const jumpForce = -12; // Upward force for jumping
+      const marioSpeed = 5; // Speed for left/right movement
+      const groundLevel = 20; // Ground height
+      const keys = {}; // Track pressed keys
+      let backgroundX = 0; // Background scroll position
+      const backgroundSpeed = 3; // Scrolling speed
+
+      const containerWidth = container.clientWidth; // Width of the container
+      const marioWidth = mario.clientWidth; // Width of Mario
+      const backgroundWidth = background.clientWidth; // Total background width
+
+      // Get all the obstacles
+      const obstacles = document.querySelectorAll('.obstacle');
+
+      // Update Mario and background positions smoothly
+      function updatePosition() {
+        // Horizontal movement
+        if (keys["ArrowRight"] || keys["d"]) {
+          if (marioX + marioWidth < containerWidth / 2) {
+            marioX = Math.min(containerWidth - marioWidth, marioX + marioSpeed);
+          } else if (backgroundX > -(backgroundWidth - containerWidth)) {
+            backgroundX -= backgroundSpeed;
+            background.style.left = `${backgroundX}px`;
+          }
+        }
+
+        if (keys["ArrowLeft"] || keys["a"]) {
+          if (marioX > 0) {
+            marioX = Math.max(0, marioX - marioSpeed); // Move Mario left
+          } else if (backgroundX < 0) {
+            backgroundX += backgroundSpeed;
+            background.style.left = `${backgroundX}px`;
+          }
+        }
+
+        // Jump and Gravity
+        if (isJumping) {
+          velocityY += gravity; // Apply gravity when Mario is jumping
+        }
+
+        // Update Mario's vertical position
+        marioY += velocityY; 
+
+        if (marioY <= groundLevel) {
+          marioY = groundLevel; // Mario is on the ground
+          isJumping = false; // Stop jumping
+          velocityY = 0; // Reset vertical velocity
+        }
+
+        // Apply the updated position to Mario
+        mario.style.left = `${marioX}px`;
+        mario.style.bottom = `${marioY}px`;
+
+        // Check for collision with obstacles
+        checkCollision();
+      }
+
+      // Collision detection with obstacles
+      function checkCollision() {
+        for (const obstacle of obstacles) {
+          const obstacleX = parseInt(obstacle.style.left);
+          const obstacleWidth = obstacle.clientWidth;
+          const obstacleY = parseInt(obstacle.style.bottom);
+          const obstacleHeight = obstacle.clientHeight;
+
+          // Check if Mario's bounding box intersects with an obstacle's bounding box
+          if (
+            marioX < obstacleX + obstacleWidth &&
+            marioX + marioWidth > obstacleX &&
+            marioY < obstacleY + obstacleHeight &&
+            marioY + mario.clientHeight > obstacleY
+          ) {
+            // Collision detected: stop Mario's movement or handle the collision
+            console.log("Collision detected!");
+            if (keys["ArrowRight"] || keys["d"]) {
+              marioX -= marioSpeed; // Prevent Mario from passing through the obstacle
+            }
+          }
+        }
+      }
+
+      // Handle key press events
+      document.addEventListener("keydown", (event) => {
+        keys[event.key] = true;
+
+        // Jumping logic
+        if ((event.code === "Space" || event.key === "w") && !isJumping && marioY === groundLevel) {
+          isJumping = true;
+          velocityY = jumpForce; // Apply initial jump velocity
+        }
+      });
+
+      document.addEventListener("keyup", (event) => {
+        keys[event.key] = false;
+      });
+
+      // Game loop
+      function gameLoop() {
+        updatePosition(); // Update positions
+        requestAnimationFrame(gameLoop); // Continue animation
+      }
+
+      gameLoop(); // Start the game loop
+    </script>
+  </body>
+</html>
