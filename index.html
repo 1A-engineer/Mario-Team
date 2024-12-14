@@ -24,7 +24,7 @@
 
       #background {
         position: absolute;
-        width: 800px; /* Make this larger than the container to allow scrolling */
+        width: 800px;
         height: 260px;
         background-image: url('https://www.shutterstock.com/image-illustration/venezuela-tachira-february-05-2023-260nw-2299245343.jpg');
         background-size: cover;
@@ -60,15 +60,14 @@
       <div id="background"></div>
       <div id="mario">
         <img
-          src="https://pngimg.com/uploads/mario/mario_PNG74.png"
+          src="assets/mario-assets/mario/small/mario-idle.png"
           alt="Mario"
         />
       </div>
 
-      <!-- Obstacles -->
-      <div class="obstacle" style="left: 400px;"></div>
+      <div class="obstacle" style="left: 400px;"><img src="assets/mario-assets/pipe-b.png"></div>
       <div class="obstacle" style="left: 600px;"></div>
-      <div class="obstacle" style="left: 800px;"></div>
+    
     </div>
 
     <script>
@@ -122,8 +121,9 @@
         }
 
         // Update Mario's vertical position
-        marioY += velocityY; 
+        marioY += velocityY;
 
+        // Check if Mario hits the ground
         if (marioY <= groundLevel) {
           marioY = groundLevel; // Mario is on the ground
           isJumping = false; // Stop jumping
