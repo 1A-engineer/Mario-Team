@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  height: 80vw,
+  }
+
+/* Make the start screen cover the entire viewport */
+#start-screen {
+    position: fixed; 
+    left: 0;
+    width: 100vw; 
+    height: 100vh; 
+    background-color: rgba(0, 0, 0, 0.7); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    z-index: 1000; 
+  }
+  
+  /* Style for the Start Button */
+  #start-btn {
+    font-size: 24px;
+    padding: 20px 40px;
+    background-color: #ffcc00;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: 500px;
+  }
+  
+  #start-btn:hover {
+    background-color: #ff9900;
+  }
+  
+
+
+  
+
+  #game-container {
+    position: relative;
+    width: 800px;
+    height: 260px;
+    overflow: hidden;
+    background-color: #87ceeb;
+    margin-top: 500px;
+  }
+
+
+  #background {
+    position: absolute;
+    width: 900px;
+    height: 280px;
+    background-image: url('https://www.shutterstock.com/image-illustration/venezuela-tachira-february-05-2023-260nw-2299245343.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+
+  #mario {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border-radius: 10px;
+  }
+
+
+  #mario img {
+    width: 50px;
+    height: 50px;
+  }
+
+
+  .obstacle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+  }
