@@ -22,7 +22,7 @@ const containerWidth = container.clientWidth;
 const marioWidth = mario.clientWidth;
 const backgroundWidth = background.clientWidth;
 
-// Start page
+// ----------------- **** >>>>>>>>>  Start button
 
 let gameStarted = false;
 
@@ -54,7 +54,7 @@ if (event.key === " " && !gameStarted) {
 }
 })
 
-//  Main logic
+// ----------------- **** >>>>>>>>>   Main logic
 
 const obstacles = document.querySelectorAll(".obstacle");
 
@@ -74,7 +74,7 @@ function updatePosition() {
      ) {
        canMoveRight = false;
      }
-   }
+   }     
 
   //  Mario only can move in first half; otherwise, it must move with bakcground.
 
@@ -116,9 +116,9 @@ function updatePosition() {
 
 //  ------>>>
 
- if(keys[" "] || keys ["w"]){
+if(keys[" "] || keys["w"]){
   marioY++;
- }
+}
 
 //  
 
@@ -192,4 +192,6 @@ function gameLoop() {
 
 
 gameLoop();
+
+console.log(`${Even.key}`)
 
