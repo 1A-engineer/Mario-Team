@@ -5,6 +5,7 @@ const c = canvas.getContext('2d');
 canvas.width = 1100;
 canvas.height = 400;
 
+<<<<<<< HEAD
 const testlvl = new Image();
 testlvl.src = 'assets/mario-assets/test-lvl.png'; // Testing level for canvas
 
@@ -29,6 +30,14 @@ goombaImageL.src = 'assets/mario-assets/goomba-l.png'; // Goomba left
 
 const goombaImageR = new Image();
 goombaImageR.src = 'assets/mario-assets/goomba-r.png'; // Goomba right
+=======
+// Playeriin model
+const playerImage = new Image();
+playerImage.src = 'assets/mario-assets/mario/small/mario-idle.png';
+
+const goombaImage = new Image();
+goombaImage.src = 'assets/mario-assets/goomba-l.png'; // Goomba model
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 
 // Objectuudiin model
 
@@ -42,6 +51,7 @@ const obstacleImage0 = new Image();
 obstacleImage0.src = 'assets/mario-assets/brick.png'; // Brick
 
 const obstacleImageL = new Image();
+<<<<<<< HEAD
 obstacleImageL.src = 'assets/mario-assets/luckybox/1.png'; // Luckybox default
 
 const itemBuff = new Image();
@@ -98,6 +108,21 @@ const player = {
     }
 
     c.restore(); // Restore the canvas state
+=======
+obstacleImageL.src = 'assets/mario-assets/luckybox.gif'; // Luckybox
+
+// Player object
+const player = {
+  position: { x: 100, y: 100 },
+  velocity: { x: 0, y: 0 },
+  width: 30,
+  height: 40,
+  gravity: 0.2,
+  jumpVelocity: -8,
+
+  draw: function () { // img         x                y          width         height
+    c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 
     // Debug border
     c.strokeStyle = 'green';
@@ -105,6 +130,7 @@ const player = {
   },
 
   update: function () {
+<<<<<<< HEAD
     // Update position
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -130,10 +156,25 @@ const player = {
       }
     } else {
       this.marioIdle = marioIdle; // Yuch hiigeegu uyd butsd idle img
+=======
+    // Zuun baruun
+    this.position.x += this.velocity.x;
+
+    // Usreh
+    this.position.y += this.velocity.y;
+
+    // Gravity
+    if (this.position.y + this.height < canvas.height) {
+      this.velocity.y += this.gravity;
+    } else {
+      this.velocity.y = 0;
+      this.position.y = canvas.height - this.height;
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
     }
   }
 };
 
+<<<<<<< HEAD
 
 // Goomba object
 const goomba = {
@@ -146,11 +187,24 @@ const goomba = {
 
   draw: function () {
     c.drawImage(this.goombaIdle, this.position.x, this.position.y, this.width, this.height);
+=======
+// Goomba object
+const goomba = {
+  position: { x: 800, y: 370 },
+  velocity: { x: 0.4, y: 0 }, // goomba speed
+  width: 30,
+  height: 30,
+  gravity: 0.2,
+
+  draw: function () {
+    c.drawImage(goombaImage, this.position.x, this.position.y, this.width, this.height);
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 
     // Debug border
     c.strokeStyle = 'red';
     c.strokeRect(this.position.x, this.position.y, this.width, this.height);
   },
+<<<<<<< HEAD
   update: function () {
     // Zuun baruun hudulguun
     this.position.x += this.velocity.x;
@@ -225,6 +279,80 @@ const obstacles = [
   { position: { x: 400, y: 224 }, width: 27, height: 27, image: obstacleImage0 }, // Brick
   { position: { x: 454, y: 224 }, width: 27, height: 27, image: obstacleImage0 }, // Brick
   { position: { x: 427, y: 224 }, width: 27, height: 27.5, image: obstacleImageL } // Luckybox
+=======
+
+  update: function () {
+    // zuun baruun
+    this.position.x += this.velocity.x;
+
+    // deeshee dooshoo
+    this.position.y += this.velocity.y;
+
+    // // Gravity effect
+    // if (this.position.y + this.height < canvas.height) {
+    //   this.velocity.y += this.gravity;
+    // } else {
+    //   this.velocity.y = 0;
+    //   this.position.y = canvas.height - this.height;
+    // }
+  }
+};
+
+
+// Controller keys boolean check (default)
+const keys = {
+  w: { pressed: false },
+  a: { pressed: false },
+  d: { pressed: false }
+};
+
+function handleKeyDown(e) {
+  switch (e.key) {
+    case 'w':
+      if (player.velocity.y === 0) player.velocity.y = player.jumpVelocity; // if player gazart hursn uyd usrene
+      break;
+    case 'a':
+      keys.a.pressed = true;
+      break;
+    case 'd':
+      keys.d.pressed = true;
+      break;
+  }
+}
+
+// Key up listener
+function handleKeyUp(e) {
+  switch (e.key) {
+    case 'a':
+      keys.a.pressed = false;
+      break;
+    case 'd':
+      keys.d.pressed = false;
+      break;
+  }
+}
+
+function updatePlayerVelocity() {
+  player.velocity.x = 0; // Player stop
+  // Movement speed
+  if (keys.a.pressed) player.velocity.x = -1;
+  if (keys.d.pressed) player.velocity.x = 1;
+}
+
+// Clear the canvas
+function clearCanvas() {
+  c.fillStyle = '#5C94FC';
+  c.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Obstacles
+const obstacles = [
+  { position: { x: 600, y: 320 }, width: 80, height: 80, image: obstacleImage1 }, // Small pipe
+  { position: { x: 850, y: 280 }, width: 80, height: 120, image: obstacleImage2 }, // Medium pipe
+  { position: { x: 300, y: 250 }, width: 30, height: 30, image: obstacleImage0 }, // Brick
+  { position: { x: 330, y: 250 }, width: 30, height: 30, image: obstacleImage0 }, // Brick
+  { position: { x: 360, y: 250 }, width: 30, height: 30, image: obstacleImageL } // Luckybox
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 ];
 
 // Draw obstacles
@@ -232,8 +360,11 @@ function drawObstacles() {
   obstacles.forEach(obstacle => {
     c.drawImage(obstacle.image, obstacle.position.x, obstacle.position.y, obstacle.width, obstacle.height);
   });
+<<<<<<< HEAD
   luckybox.draw()
   itembuff.draw(); // Draw the item buff
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 }
 
 // Collision Detection and Resolution by (CHATGPT)
@@ -273,7 +404,10 @@ function resolveCollisions() {
         player.position.y + player.height <= obstacle.position.y &&
         player.position.y + player.height + player.velocity.y >= obstacle.position.y
       ) {
+<<<<<<< HEAD
         player.gravity = 0;
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
         player.velocity.y = 0; // Stop falling
         player.position.y = obstacle.position.y - player.height; // Snap to obstacle top
       }
@@ -285,12 +419,16 @@ function resolveCollisions() {
       ) {
         player.velocity.y = 0; // Stop upward movement
         player.position.y = obstacle.position.y + obstacle.height; // Snap below obstacle
+<<<<<<< HEAD
         itembuff.visible = true; // Show the item buff
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
       }
     }
   });
 }
 
+<<<<<<< HEAD
 
 // Controller keys boolean check (default)
 const keys = {
@@ -339,6 +477,8 @@ function clearCanvas() {
 
 }
 
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 // Collision Detection for Goomba
 function resolveGoombaCollisions() {
   obstacles.forEach(obstacle => {
@@ -367,6 +507,7 @@ function resolveGoombaCollisions() {
   });
 }
 
+<<<<<<< HEAD
 // Collision Detection for Goomba
 function itembuffCollisions() {
   obstacles.forEach(obstacle => {
@@ -396,6 +537,8 @@ function itembuffCollisions() {
 }
 
 
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 
 // frame by frame window updater
 function animate() {
@@ -405,16 +548,26 @@ function animate() {
   updatePlayerVelocity(); // Player horizontal movement
   resolveCollisions(); // Handle collisions
   resolveGoombaCollisions(); // Goomba colission
+<<<<<<< HEAD
   itembuffCollisions();
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
   player.update(); // Player update
   player.draw(); // Create player
   goomba.draw() // Create goomba
   goomba.update() // Goomba update
+<<<<<<< HEAD
   itembuff.update(); // Update item buff growing animation
+=======
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
 }
 
 // Event listener
 addEventListener('keydown', handleKeyDown);
 addEventListener('keyup', handleKeyUp);
 
+<<<<<<< HEAD
 animate();
+=======
+animate();
+>>>>>>> a390d4027a8d7660940c387754b79b43c687b487
